@@ -1,6 +1,8 @@
 const express = require("express");
 const helmet = require("helmet");
 const morgan = require("morgan");
+const requestId = require("./middlewares/requestId");
+const errorHandler = require("./middlewares/errorHandler");
 
 const config = require("./config/env");
 const webhookRoute = require("./routes/webhook");
@@ -12,6 +14,7 @@ app.use(express.json());
 app.use(express.urlencoded({
     extended: true
 }));
+app.use(requestId);
 
 app.use(morgan("dev"));
 app.get("/", (req, res) => {
@@ -34,3 +37,5 @@ app.listen(config.app.port, () => {
         `Server running on port ${config.app.port}`
     );
 });
+
+app.use(errorHandler);

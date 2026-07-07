@@ -1,11 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const asyncHandler = require("../middlewares/asyncHandler");
 
-router.post("/", (req, res) => {
-    res.json({
-        success: true,
-        message: "Webhook route ready."
-    });
-});
+const {
+    receiveWebhook
+} = require("../controllers/webhookController");
+
+router.post(
+    "/",
+    asyncHandler(receiveWebhook)
+);
 
 module.exports = router;
